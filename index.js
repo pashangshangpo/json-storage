@@ -120,8 +120,22 @@ class Storage {
         })
     }
 
-    find(key) {
+    findKeys(regex) {
+        return this.getKeys().then(res => {
+            if (res.status === 'ok') {
+                return {
+                    status: 'ok',
+                    data: res.data.filter(key => {
+                        return regex.test(key)
+                    })
+                }
+            }
 
+            return {
+                status: 'fail',
+                details: res.details
+            }
+        })
     }
 }
 
