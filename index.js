@@ -45,7 +45,7 @@ class Storage {
 
     get(key) {
         return new Promise(resolve => {
-            fs.readFile(`${this.root}/${key}`, (err, data) => {
+            fs.readFile(`${this.root}/${key}`, (err, res) => {
                 if (err) {
                     resolve({
                         status: 'fail',
@@ -55,7 +55,7 @@ class Storage {
                 else {
                     resolve({
                         status: 'ok',
-                        data: JSON.parse(data.toString())
+                        data: JSON.parse(res.toString())
                     })
                 }
             })
@@ -63,7 +63,22 @@ class Storage {
     }
 
     getKeys() {
-
+        return new Promise(resolve => {
+            fs.readdir(this.root, (err, res) => {
+                if (err) {
+                    resolve({
+                        status: 'fail',
+                        details: err
+                    })
+                }
+                else {
+                    resolve({
+                        status: 'ok',
+                        data: res
+                    })
+                }
+            })
+        })
     }
 
     find(key) {
