@@ -100,17 +100,20 @@ class Storage {
     }
 
     getAll() {
-        return this.getKeys().then(res => {
+        return this.getKeys().then(async res => {
             if (res.status === 'ok') {
-                return Promise.all(res.data.map(key => {
-                    return this.get(key).then(res => {
-                        if (res.status === 'ok') {
-                            return res.data
-                        }
-
-                        return null
-                    })
-                }))
+                return {
+                    status: 'ok',
+                    data: await Promise.all(res.data.map(key => {
+                        return this.get(key).then(res => {
+                            if (res.status === 'ok') {
+                                return res.data
+                            }
+    
+                            return null
+                        })
+                    }))
+                }
             }
 
             return {
