@@ -62,6 +62,24 @@ class Storage {
         })
     }
 
+    remove(key) {
+        return new Promise(resolve => {
+            fs.unlink(`${this.root}/${key}`, (err, res) => {
+                if (err) {
+                    resolve({
+                        status: 'fail',
+                        details: err
+                    })
+                }
+                else {
+                    resolve({
+                        status: 'ok'
+                    })
+                }
+            })
+        })
+    }
+
     getKeys() {
         return new Promise(resolve => {
             fs.readdir(this.root, (err, res) => {
@@ -81,21 +99,24 @@ class Storage {
         })
     }
 
-    remove(key) {
-        return new Promise(resolve => {
-            fs.unlink(`${this.root}/${key}`, (err, res) => {
-                if (err) {
-                    resolve({
-                        status: 'fail',
-                        details: err
+    getAll() {
+        return this.getKeys().then(res => {
+            if (res.status === 'ok') {
+                return Promise.all(res.data.map(key => {
+                    return this.get(key).then(res => {
+                        if (res.status === 'ok') {
+                            return res.data
+                        }
+
+                        return null
                     })
-                }
-                else {
-                    resolve({
-                        status: 'ok'
-                    })
-                }
-            })
+                }))
+            }
+
+            return {
+                status: 'fail',
+                details: res.details
+            }
         })
     }
 
