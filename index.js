@@ -26,7 +26,21 @@ class Storage {
     }
 
     set(key, data) {
-        
+        return new Promise(resolve => {
+            fs.writeFile(`${this.root}/${key}`, JSON.stringify(data), err => {
+                if (err) {
+                    resolve({
+                        status: 'fail',
+                        details: err
+                    })
+                }
+                else {
+                    resolve({
+                        status: 'ok'
+                    })
+                }
+            })
+        })
     }
 
     get(key) {
