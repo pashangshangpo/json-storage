@@ -81,6 +81,24 @@ class Storage {
         })
     }
 
+    remove(key) {
+        return new Promise(resolve => {
+            fs.unlink(`${this.root}/${key}`, (err, res) => {
+                if (err) {
+                    resolve({
+                        status: 'fail',
+                        details: err
+                    })
+                }
+                else {
+                    resolve({
+                        status: 'ok'
+                    })
+                }
+            })
+        })
+    }
+
     find(key) {
 
     }
