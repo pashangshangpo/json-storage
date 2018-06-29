@@ -44,7 +44,22 @@ class Storage {
     }
 
     get(key) {
-
+        return new Promise(resolve => {
+            fs.readFile(`${this.root}/${key}`, (err, data) => {
+                if (err) {
+                    resolve({
+                        status: 'fail',
+                        details: err
+                    })
+                }
+                else {
+                    resolve({
+                        status: 'ok',
+                        data: JSON.parse(data.toString())
+                    })
+                }
+            })
+        })
     }
 
     getKeys() {
@@ -55,3 +70,5 @@ class Storage {
 
     }
 }
+
+module.exports = Storage
