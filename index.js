@@ -10,11 +10,11 @@ class Storage {
     constructor(root) {
         this.root = root
 
-        if (!this.has(this.root)) {
+        if (!fs.existsSync(this.root)) {
             this.root.split('/').map((item, index, list) => {
                 const filePath = list.slice(0, index + 1).join('/')
 
-                if (filePath && !this.has(filePath)) {
+                if (filePath && !fs.existsSync(filePath)) {
                     fs.mkdirSync(filePath)
                 }
             })
@@ -22,7 +22,7 @@ class Storage {
     }
 
     has(key) {
-        return fs.existsSync(key)
+        return fs.existsSync(`${this.root}/${key}`)
     }
 
     set(key, data) {
