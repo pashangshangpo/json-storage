@@ -4,7 +4,18 @@
  * @date 2018-06-29 18:24:44
  */
 
-const fs = require('fs')
+let fs = require('fs')
+
+let index = 0
+
+let getId = () => {
+    let random = `${Math.random() * Math.random()}`.slice(2, 8)
+    let now = Date.now()
+    
+    index += 1
+
+    return `${index}:${parseInt(`${now}${random}`, 10).toString(32)}`
+}
 
 class Storage {
     constructor(root) {
