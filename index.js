@@ -139,6 +139,13 @@ class Storage {
                 return {
                     status: 'ok',
                     data: res.data.filter(key => {
+                        if (typeof regex === 'string') {
+                            return key.indexOf(regex) > -1
+                        }
+                        else if (typeof regex === 'function') {
+                            return regex(key)
+                        }
+                        
                         return regex.test(key)
                     })
                 }
