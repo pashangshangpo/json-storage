@@ -4,22 +4,12 @@
  * @date 2018-06-29 18:24:44
  */
 
-let fs = require('fs')
-
-let index = 0
-
-let getId = () => {
-    let random = `${Math.random() * Math.random()}`.slice(2, 8)
-    let now = Date.now()
-    
-    index += 1
-
-    return `${index}:${parseInt(`${now}${random}`, 10).toString(32)}`
-}
+const fs = require('fs')
 
 class Storage {
     constructor(root) {
         this.root = root
+        this.index = 0
 
         if (!fs.existsSync(this.root)) {
             this.root.split('/').map((item, index, list) => {
@@ -30,6 +20,15 @@ class Storage {
                 }
             })
         }
+    }
+
+    getId() {
+        let random = `${Math.random() * Math.random()}`.slice(2, 8)
+        let now = Date.now()
+        
+        this.index += 1
+    
+        return `${this.index}:${parseInt(`${now}${random}`, 10).toString(32)}`
     }
 
     has(key) {
